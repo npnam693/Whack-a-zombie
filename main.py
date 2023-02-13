@@ -11,7 +11,7 @@ class Zombie(pygame.sprite.Sprite):
                 rand.remove(zom.index)
         self.index = rand[random.randint(0,len(rand)-1)]
         self.rect = self.image.get_rect(center = positions[self.index])
-        self.time_live = 30
+        self.time_live = game_level
         self.hit = False
         self.missed = False
     
@@ -77,6 +77,7 @@ zombie_group = pygame.sprite.Group()
 hammer_sound = pygame.mixer.Sound('sounds/hammer.wav')
 hammer_sound.set_volume(0.5)
 
+
 list_index = [False, False, False, False, False, False, False, False, False, False, False]
 positions = [(65,351),(279,332),(202,365),(513,326),(664,344),(810,322),(115,513),(290,480),(537,459),(667,500),(829,523)]
 
@@ -85,8 +86,11 @@ pygame.time.set_timer(zombie_appear,1500)
 
 hit_count = 0
 miss_count = 0
+game_level = 40
 game_active = False
 while True: # main game loop
+    game_level = 40 - int(hit_count / 5)*5
+    print(game_level)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
