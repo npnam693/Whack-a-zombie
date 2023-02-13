@@ -78,7 +78,6 @@ hammer_sound = pygame.mixer.Sound('sounds/hammer.wav')
 hammer_sound.set_volume(0.5)
 
 
-list_index = [False, False, False, False, False, False, False, False, False, False, False]
 positions = [(65,351),(279,332),(202,365),(513,326),(664,344),(810,322),(115,513),(290,480),(537,459),(667,500),(829,523)]
 
 zombie_appear = pygame.USEREVENT + 1
