@@ -14,6 +14,10 @@ class Zombie(pygame.sprite.Sprite):
         self.time_live = game_level
         self.hit = False
         self.missed = False
+        self.appear_sound = pygame.mixer.Sound('sounds/appear.wav')
+        self.disappear_sound = pygame.mixer.Sound('sounds/disappear.wav')
+        self.hit_sound = pygame.mixer.Sound('sounds/hit.wav')
+        self.appear_sound.play()
     
     def time_countdown(self):
         self.time_live -= 1
@@ -26,6 +30,7 @@ class Zombie(pygame.sprite.Sprite):
                     self.missed = True
                     global miss_count
                     miss_count += 1
+                    self.disappear_sound.play()
                 else: 
                     self.kill()
     def movement(self):
@@ -40,6 +45,8 @@ class Zombie(pygame.sprite.Sprite):
         global hit_count
         hit_count += 1
         self.time_live = 20
+        self.hit_sound.play()
+
     
     def show_message(self):
         if self.hit == True:
@@ -74,9 +81,12 @@ zombies = [zombie_1, zombie_2, zombie_3]
 zombie_group = pygame.sprite.Group()
 
 
-hammer_sound = pygame.mixer.Sound('sounds/hammer.wav')
-hammer_sound.set_volume(0.5)
+hammer1_surface  = pygame.image.load('graphics/hammer.png').convert_alpha()
+hammer2_surface  = pygame.image.load('graphics/hammer2.png').convert_alpha()
+hammer_surface = hammer1_surface
+hammer_rect = hammer_surface.get_rect()
 
+hammer_sound = pygame.mixer.Sound('sounds/hammer.wav')
 
 positions = [(65,351),(279,332),(202,365),(513,326),(664,344),(810,322),(115,513),(290,480),(537,459),(667,500),(829,523)]
 
@@ -88,14 +98,20 @@ miss_count = 0
 game_level = 40
 game_active = False
 while True: # main game loop
+    hammer_rect.center = pygame.mouse.get_pos()
+
     game_level = 40 - int(hit_count / 5)*5
     print(game_level)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+
+        if event.type == pygame.MOUSEBUTTONUP:
+            hammer_surface = hammer1_surface
         if event.type == pygame.MOUSEBUTTONDOWN:
             if game_active:
+                hammer_surface = hammer2_surface
                 hammer_sound.play()
                 for zombie in zombie_group:
                     if zombie.rect.collidepoint(event.pos) and zombie.hit == False:
@@ -110,11 +126,13 @@ while True: # main game loop
             if event.type == zombie_appear:
                 zombie_group.add(Zombie())
     if game_active:
+        pygame.mouse.set_visible(False)
         screen.blit(background_surface, (0,0))
         zombie_group.draw(screen)
         zombie_group.update()
         screen.blit(test_font.render('Hit:' + str(hit_count) , False, 'Green') , (20,20))
         screen.blit(test_font.render('Miss:' + str(miss_count) , False, 'Red') , (150,20))
+        screen.blit(hammer_surface, hammer_rect)
         if miss_count == 10:
             game_active = False
     else:
