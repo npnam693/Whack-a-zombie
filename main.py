@@ -1,5 +1,6 @@
 import pygame
 import random
+from pygame import mixer
 # --------
 class Zombie(pygame.sprite.Sprite):
     def __init__(self):
@@ -54,6 +55,7 @@ class Zombie(pygame.sprite.Sprite):
         self.movement()
         self.show_message()
 # --------
+pygame.mixer.pre_init(44100,16,2,4096)
 pygame.init()
 pygame.display.set_caption('Whack a zombie!!')
 screen = pygame.display.set_mode((900,600))
@@ -76,6 +78,14 @@ zombie_group = pygame.sprite.Group()
 
 hammer_sound = pygame.mixer.Sound('sounds/hammer.wav')
 hammer_sound.set_volume(0.5)
+
+
+pygame.mixer.music.load("sounds/bgsound.wav") 
+pygame.mixer.music.set_volume(1)
+pygame.mixer.music.play(-1)
+
+
+
 
 
 positions = [(65,351),(279,332),(202,365),(513,326),(664,344),(810,322),(115,513),(290,480),(537,459),(667,500),(829,523)]
