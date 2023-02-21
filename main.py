@@ -136,6 +136,7 @@ while True: # main game loop
         if miss_count == 10:
             game_active = False
     else:
+        pygame.mouse.set_visible(True)
         if miss_count != 0:
             screen.blit(intro_surface, (0,0))
             screen.blit(test_font.render('Hit:' + str(hit_count) , False, 'Green') , (580,340))
