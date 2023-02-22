@@ -62,6 +62,7 @@ class Zombie(pygame.sprite.Sprite):
         self.show_message()
 # --------
 pygame.init()
+pygame.mixer.pre_init(44100,16,2,4096)
 pygame.display.set_caption('Whack a zombie!!')
 screen = pygame.display.set_mode((900,600))
 test_font = pygame.font.Font(None, 50)
@@ -70,6 +71,12 @@ clock = pygame.time.Clock()
 
 intro_surface = pygame.image.load('graphics/intro.png').convert()
 background_surface = pygame.image.load('graphics/background.png').convert()
+
+
+pygame.mixer.music.load('sounds/bgsound.wav')
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1)
+
 
 start_btn_surf = test_font.render('START GAME', False, 'Green')
 start_btn_rect = start_btn_surf.get_rect(topleft = (500, 430))
@@ -99,8 +106,8 @@ game_level = 40
 game_active = False
 while True: # main game loop
     hammer_rect.center = pygame.mouse.get_pos()
-
-    game_level = 40 - int(hit_count / 5)*5
+    # pygame.mixer.music.play(1)
+    game_level = 60 - int(hit_count / 5)*5
     print(game_level)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
